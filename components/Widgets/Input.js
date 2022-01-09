@@ -31,26 +31,26 @@ export default class Input extends Widget {
     this.autofocus = props.autofocus;
     this.label = props.label;
 
-    this.render([{tag: 'label', className: 'input__label', content: this.label}]);
-    this.mount();
+    this.createWidget([{tag: 'label', className: 'input__label', content: this.label}]);
 
-    this.inputElem = this.widget.querySelector('input');
-    this.inputElem.placeholder = this.placeholder;
+    this.keyElement.placeholder = this.placeholder;
 
-    this.inputElem.value = this.value;
-    this.widget.addEventListener('input', this.changeValue.bind(this));
+    this.keyElement.value = this.value;
+    this.widgetElement.addEventListener('input', this.changeValue.bind(this));
 
-    if (this.focus != null) this.inputElem.focus();
+    if (this.focus != null) this.keyElement.focus();
 
     if (this.validation != null) {
       this.validation = Object.assign(this.validation, new Validations(this.validation.custom));
-      this.inputElem.addEventListener('blur', this.checkValidation.bind(this));
+      this.keyElement.addEventListener('blur', this.checkValidation.bind(this));
 
       if (this.validation.mask != null) {
         this.maskElem = new Tip({content: this.validation.masks[this.validation.mask]});
-        this.maskElem.mount(this.widget);
+        this.maskElem.mount(this.widgetElement);
       }
     }
+
+    this.render();
   }
 
   changeValue(e) {
@@ -60,7 +60,7 @@ export default class Input extends Widget {
 
   checkValidation() {
     //  в список готовых правил подставлыется переданная пользователем строка data | email | mobile
-    const container = this.widget.querySelector('.input__container');
+    const container = this.widgetElement.querySelector('.input__container');
     if (!this.validation.rules[this.validation.rule].test(this.value)) {
       container.classList.add('_invalid');
 

@@ -1,11 +1,3 @@
-/*.wrapper {*/
-
-/*  !*border-radius: 3px;*!*/
-/*  !*outline: 1px solid #000;*!*/
-
-/*  !*width: inherit;*!*/
-
-/*}*/
 .input__wrapper {
   display: flex;
 }

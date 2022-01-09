@@ -1,7 +1,7 @@
 import Widget from "./index.js";
 import {compose} from "../utils/compose.js";
 
-class Form extends Widget {
+export default class Form extends Widget {
   type = 'form';
   widgets;
 
@@ -12,8 +12,8 @@ class Form extends Widget {
     this[Symbol.iterator] = this.iter;
 
     if (valueDecorators != null) {
-      for (let {element} of this.widgets) {
-        element = new Proxy(element, {
+      for (let {keyElement} of this.widgets) {
+        keyElement = new Proxy(keyElement, {
           get(target, key) {
             return compose(...valueDecorators)(target[key]);
           },
@@ -32,5 +32,3 @@ class Form extends Widget {
     }
   }
 }
-
-export default Form;

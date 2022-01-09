@@ -1,7 +1,6 @@
 import Input from "./Widgets/Input.js";
 import Form from "./Widgets/Form.js";
 // import Button from "./Widgets/Button.js";
-// import Tip from "./Widgets/Tip.js";
 
 const input = new Input({
   styles: {
@@ -11,8 +10,12 @@ const input = new Input({
     rule: 'date', mask: 'date',
   },
   label: 'Expiration date',
-  // render: 'string'
+  render: 'string',
 });
+
+// input.mount(document.body);
+
+document.body.innerHTML = input.render();
 // new Button({styles: {width: '100px'}});
 
 const form = new Form(

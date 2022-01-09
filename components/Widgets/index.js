@@ -7,7 +7,7 @@ export default class Widget {
   styles;
   type;
   validation;
-  element;
+  keyElement;
   valueDecorators;
 
   /**
@@ -31,6 +31,29 @@ export default class Widget {
     return elem;
   }
 
+  createWidget(elements) {
+    const wrapper = this.createElement('div', [`${this.type}__wrapper`]);
+    const container = this.createElement('div', [`${this.type}__container`]);
+    const keyElement = this.createElement(this.type, [`${this.type}__${this.type}`]);
+
+    if (elements != null) {
+      for (let item of elements) {
+        wrapper.append(this.createElement(item.tag, [item.className], item.content));
+      }
+    }
+
+    wrapper.append(container);
+    container.append(keyElement);
+
+    if (this.styles != null) {
+      this.addStyles(wrapper, this.styles);
+    }
+
+    this.keyElement = keyElement;
+    this.widgetElement = wrapper;
+    this.events = new EventEmitter(this.keyElement);
+  }
+
   // makeStyles(styles) {
   //   return (styles)
   //     ? Object
@@ -40,47 +63,32 @@ export default class Widget {
   //     : null;
   // }
   makeStyles(styles) {
-    return (styles)
-      ? JSON.stringify(styles).replace(/[{}",]/g, (str) => str === ',' ? ';' : '')
-      : null;
+    if (styles != null) {
+      return JSON.stringify(styles)
+        .replace(/[{}",]/g, (str) => str === ',' ? ';' : '');
+    }
   }
 
   addStyles(element, styles) {
     if (this.styles != null) element.style.cssText = styles;
   }
 
-  render(elements) {
-    const wrapper = this.createElement('div', [`${this.type}__wrapper`]);
-    const container = this.createElement('div', [`${this.type}__container`]);
-    const keyElem = this.createElement(this.type, [`${this.type}__${this.type}`]);
-
-    if (elements != null) {
-      for (let item of elements) {
-        wrapper.append(this.createElement(item.tag, [item.className], item.content));
-      }
+  render() {
+    if (this.props.render === 'string') {
+      this.widget = this.widgetElement.outerHTML;
+    } else {
+      this.widget = this.widgetElement;
     }
-
-    wrapper.append(container);
-    container.append(keyElem);
-
-    if (this.styles != null) {
-      this.addStyles(wrapper, this.styles);
-    }
-
-    this.element = keyElem;
-    this.widget = wrapper;
-    this.events = new EventEmitter(this.element);
 
     return this.widget;
   }
 
   mount(element, method = 'append') {
-    this.root = document.getElementById('root');
-    (element ?? this.root)[method](this.widget);
+    element[method](this.widget);
   }
 
   unmount() {
-    this.widget.remove();
+    this.widgetElement.remove();
   }
 }
 
