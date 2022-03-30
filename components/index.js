@@ -1,5 +1,7 @@
 import Input from "./Widgets/Input.js";
 import Form from "./Widgets/Form.js";
+import VNode from "../VDOM/VNode.js";
+
 // import Button from "./Widgets/Button.js";
 
 const input = new Input({
@@ -25,3 +27,20 @@ const form = new Form(
     (value) => +value,
   ],
 );
+
+const vnode = new VNode('div', {
+  attrs: {
+    'data-x': '30',
+  }});
+
+vnode.setAttribute('style', 'background: red; height: 30px');
+vnode.setAttribute('class', 'v-node');
+
+vnode.append(new VNode('div',{
+  attrs: {
+    'data-x': '50',
+  }}));
+
+vnode.classList.add('wrapper')
+document.body.append((vnode.render('DOM')));
+console.log(vnode)
