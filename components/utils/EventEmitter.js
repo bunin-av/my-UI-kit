@@ -1,69 +1,69 @@
 export class EventEmitter {
   /**
-   * Ключевой элемент, который будет совершать и слушать события
-   * @type {Element}
+   * Хэш-таблица обработчиков событий
+   * @type {Map<string, Set<function>>}
    */
-  element;
-
-  /**
-   * Обработчик события
-   * @type {Function}
-   */
-  handler;
-
-  /**
-   *  Создает объект для работы с событиями
-   * @param element: HTMLElement;
-   */
-  constructor(element) {
-    this.element = element;
-  }
+  handlers = new Map();
 
   /**
    * Добавляет обработчик событий
    * @param type{string} - название события
-   * @param handler{Function} - обработчик
-   * @returns {Function} - функция для удаления обработчика
+   * @param handler{function} - обработчик
+   * @returns {function} - функция для удаления обработчика
    */
   on(type, handler) {
-    this.element.addEventListener(type, handler);
-    this.handler = handler;
+    if (!type) throw Error('UNSPECIFIED_EVENT_TYPE_ERR');
 
-    return () => this.element.removeEventListener(type, handler);
+    let handlers = this.handlers.get(type);
+
+    if (handlers == null) {
+      handlers = new Set();
+      this.handlers.set(type, handlers);
+    }
+
+    handlers.add(handler);
+
+    return () => handlers.delete(handler);
   }
 
   /**
    * Удаляет обработчик событий
    * @param type{string} - название события
+   * @param handler{function} - название события
+   * @returns true|false|undefined - true: если обработчик удален, false: если обработчик отсутвует, undefined: если событие отсутвует
    */
-  off(type) {
-    this.element.removeEventListener(type, this.handler);
+  off(type, handler) {
+    if (!type) throw Error('UNSPECIFIED_EVENT_TYPE_ERR');
+
+    const handlers = this.handlers.get(type);
+
+    return handlers?.delete(handler);
   }
 
   /**
    * Создает и запускает событие
    * @param type{string} - название события
-   * @param eventInit{EventInit} - параметры события
+   * @param payload{any} - название события
    */
-  emit(type, eventInit = {bubbles: true, cancelable: true}) {
+  emit(type, payload) {
     if (!type) throw Error('UNSPECIFIED_EVENT_TYPE_ERR');
 
-    const event = new Event(type, eventInit);
+    const handlers = this.handlers.get(type);
 
-    this.element.dispatchEvent(event);
+    handlers?.forEach(cb => cb(payload));
   }
 
-  /**
-   * Представляет события в виде async iterator
-   * @param type{string} - название события
-   */
-  stream(type) {
-    return async function* () {
-      while (true) {
-        yield new Promise(res => {
-          this.element.addEventListener(type, res, {once: true});
-        });
-      }
-    }.call(this);
-  }
+  // /**
+  //  * Представляет события в виде async iterator
+  //  * @param type{string} - название события
+  //  */
+  // stream(type) {
+  //   return async function* () {
+  //     while (true) {
+  //       yield new Promise(res => {
+  //         this.element.addEventListener(type, res, {once: true});
+  //       });
+  //     }
+  //   }.call(this);
+  // }
 }
