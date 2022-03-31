@@ -1,5 +1,5 @@
 import Widget from "./index.js";
-import {compose} from "../utils/compose.js";
+import {compose} from "../../core/utils/compose.js";
 
 export default class Form extends Widget {
   type = 'form';

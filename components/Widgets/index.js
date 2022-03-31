@@ -1,4 +1,4 @@
-import {EventEmitter} from "../utils/EventEmitter.js"
+import {EventEmitter} from "../../core/EventEmitter/EventEmitter.js"
 
 
 export default class Widget {

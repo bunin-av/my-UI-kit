@@ -1,6 +1,6 @@
 import Widget from './index.js'
 import Tip from './Tip.js'
-import {Validations} from '../utils/validation-patterns.js';
+import {Validations} from '../../core/Validation/Validator.js';
 
 export default class Input extends Widget {
 

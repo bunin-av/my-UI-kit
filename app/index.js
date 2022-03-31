@@ -1,6 +1,6 @@
-import Input from "./Widgets/Input.js";
-import Form from "./Widgets/Form.js";
-import VNode from "../VDOM/VNode.js";
+import Input from "../components/Widgets/Input.js";
+import Form from "../components/Widgets/Form.js";
+import VNode from "../core/VDOM/VNode.js";
 
 // import Button from "./Widgets/Button.js";
 

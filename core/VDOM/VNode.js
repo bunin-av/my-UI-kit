@@ -69,14 +69,14 @@ class VNode {
       this.attributes.forEach(({name, value}) => {
         const attr = `${name}="${value}"`;
 
-        if (!attributes) attributes += attr;
+        if (attributes === '') attributes += attr;
         else attributes += ' ' + attr;
       });
     }
 
     if (this.classList.list.size > 0) {
       this.classList.list.forEach(className => {
-        if (!classNames) classNames += className;
+        if (classNames === '') classNames += className;
         else classNames += ' ' + className;
       });
     }
@@ -88,14 +88,13 @@ class VNode {
       });
     }
 
-    if (attributes.includes('class')) {
-      if (classNames !== '') {
+    if (classNames !== '') {
+      if (attributes.includes('class')) {
         attributes = attributes.replace(/class="(.+)"/, (s, $1) => {
           return `class="${$1} ${classNames}"`;
         });
-      }
-    } else  {
-      if (classNames !== '') {
+
+      } else {
         attributes += `class="${classNames}"`
       }
     }

@@ -1,6 +1,6 @@
 /*@import url('Widgets/Button.css');*/
-@import url('Widgets/Input.css');
-@import url('Widgets/Tip.css');
+@import url('../components/Widgets/Input.css');
+@import url('../components/Widgets/Tip.css');
 /*@import url('/Widgets/Checkbox.css');*/
 /*@import url('/Widgets/Select.css');*/
 /*@import url('/Widgets/Textarea.css');*/
