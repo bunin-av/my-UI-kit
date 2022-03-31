@@ -1,7 +1,9 @@
-import {EventEmitter} from "../../core/EventEmitter/EventEmitter.js"
+import EventEmitter from "../../core/EventEmitter/EventEmitter.js"
+import DomEventEmitter from "../../core/EventEmitter/DomEventEmitter";
+import ComponentEventEmitter from "../../core/EventEmitter/ComponentEventEmitter";
 
 
-export default class Widget {
+class Widget {
   props;
   widget;
   styles;
@@ -11,9 +13,14 @@ export default class Widget {
   valueDecorators;
 
   /**
-   * @type {EventEmitter}
+   * @type {EventEmitter<ComponentEventEmitter>}
    */
-  events;
+  emitter = new EventEmitter(new ComponentEventEmitter());
+
+  /**
+   * @type {EventEmitter<DomEventEmitter>}
+   */
+  envEvents;
 
   constructor(props = {}) {
     this.props = props;
@@ -51,7 +58,8 @@ export default class Widget {
 
     this.keyElement = keyElement;
     this.widgetElement = wrapper;
-    this.events = new EventEmitter(this.keyElement);
+
+    this.envEvents = new EventEmitter(new DomEventEmitter(this.keyElement));
   }
 
   // makeStyles(styles) {
@@ -90,5 +98,15 @@ export default class Widget {
   unmount() {
     this.widgetElement.remove();
   }
+
+  on(type, handler) {
+    return this.envEvents.on(type, handler);
+  }
+
+  off(type, handler) {
+    return this.envEvents.off(type, handler);
+  }
 }
 
+
+export default Widget;
