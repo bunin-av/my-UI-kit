@@ -27,14 +27,30 @@ class Validator {
   email = new EmailValidator();
   phone = new PhoneValidator();
 
+
+  /**
+   * Добавляет обработчик событий
+   * @param validators{{
+   *    type:string,
+   *    attrs: {
+   *      validator: function,
+   *      message: string
+   *      }
+   *    }} - объект с типом валидатора и доп. параметрами
+   */
   constructor(validators) {
     this.validators = validators;
   }
 
+  /**
+   *
+   * @param data {any} - данные для валидации
+   * @returns {null|string} - возвращает null, если данные валиды или сообщение об ошибке
+   */
   validate(data) {
     try {
-      this.validators.forEach(({ type }) => {
-        this[type].validate(data);
+      this.validators.forEach(({ type, attrs }) => {
+        this[type].validate(data, attrs);
       });
 
       return null;
