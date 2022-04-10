@@ -1,6 +1,6 @@
-import EventEmitter from "../../core/EventEmitter/EventEmitter.js"
-import DomEventEmitter from "../../core/EventEmitter/DomEventEmitter";
-import ComponentEventEmitter from "../../core/EventEmitter/ComponentEventEmitter";
+import EventEmitter from "../../core/event-emitter/event-emitter.js"
+import DomEventEmitter from "../../core/event-emitter/dom-event-emitter.js";
+import ComponentEventEmitter from "../../core/event-emitter/component-event-emitter.js";
 
 
 class Widget {
