@@ -14,7 +14,7 @@ export default class Validator {
   /**
    * Создает валидатор
    * @param validators{{
-   *    type: string,
+   *    type: 'data' | 'email' | 'phone',
    *    attrs: {
    *      validator: function,
    *      message: string
@@ -36,7 +36,7 @@ export default class Validator {
     for (const {type, attrs} of this.validators) {
       result = this.#validationStrategies[type].validate(data, attrs);
 
-      if (!result.validity) return result;
+      if (!result.ok) return result;
     }
 
     return result;

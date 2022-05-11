@@ -1,6 +1,7 @@
+import VNode from "../v-node.js";
+
 export function renderDOM() {
   const element = document.createElement(this.tag);
-
   if (this.attributes.size > 0) {
     this.attributes.forEach(({name, value}) => {
       element.setAttribute(name, value);
@@ -14,9 +15,14 @@ export function renderDOM() {
   }
 
   if (this.children.length > 0) {
-    this.children.forEach(node => {
-      const child = node.render('DOM');
-      element.append(child);
+    this.children.forEach(child => {
+      let node = child;
+
+      if (child instanceof VNode) {
+        node = child.render(VNode.DOM);
+      }
+
+      element.append(node);
     });
   }
 

@@ -2,7 +2,7 @@ export default class ValidationResult {
   /**
    * @type {boolean}
    */
-  validity;
+  ok;
 
   /**
    * @type {string}
@@ -11,11 +11,11 @@ export default class ValidationResult {
 
   /**
    * Создает объект с данными о результате валидации
-   * @param validity {boolean}
+   * @param ok {boolean}
    * @param message {string}
    */
-  constructor(validity = true, message = '') {
-    this.validity = validity;
+  constructor(ok = true, message = '') {
+    this.ok = ok;
     this.message = message;
   }
 }

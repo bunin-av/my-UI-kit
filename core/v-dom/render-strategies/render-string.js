@@ -1,3 +1,5 @@
+import VNode from "../v-node.js";
+
 export function renderString() {
   let
     attributes = '',
@@ -21,9 +23,14 @@ export function renderString() {
   }
 
   if (this.children.length > 0) {
-    this.children.forEach(node => {
-      const child = node.render();
-      children += child;
+    this.children.forEach(child => {
+      let node = child;
+
+      if (child instanceof VNode) {
+        node = child.render(VNode.string);
+      }
+
+      children += node;
     });
   }
 

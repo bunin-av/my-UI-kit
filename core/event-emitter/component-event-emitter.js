@@ -5,6 +5,16 @@ export default class ComponentEventEmitter {
    */
   handlers = new Map();
 
+  static instance;
+
+  constructor() {
+    if (ComponentEventEmitter.instance != null) {
+      return ComponentEventEmitter.instance;
+    }
+
+    ComponentEventEmitter.instance = this;
+  }
+
   /**
    * Добавляет обработчик событий
    * @param type{string} - название события
